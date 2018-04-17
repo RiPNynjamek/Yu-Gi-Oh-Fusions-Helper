@@ -10,8 +10,8 @@ namespace Fusions
     {
         public MainWindow()
         {
-            MainWindowViewModel vm = new MainWindowViewModel();
-            DataContext = vm;
+            //MainWindowViewModel vm = new MainWindowViewModel();
+            //DataContext = vm;
             InitializeComponent();
         }
     }

@@ -4,30 +4,34 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Fusions"
+        xmlns:vm="clr-namespace:Fusions.ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="606.157" Width="1097.201">
+        Title="MainWindow" Height="606.157" Width="1097.201"
+        DataContext="{StaticResource MainViewModel}">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="4*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="15*"/>
         </Grid.RowDefinitions>
-        <TabControl Grid.Column="0" 
-                    Grid.Row="0"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                    Margin="10" 
-                    ItemsSource="{Binding Text}">
-            <TabItem Header="">
-                
-            </TabItem>
-            <TabControl.ContentTemplate>
-                <DataTemplate>
-                    <ListView ItemsSource="{Binding Value}" />
-                </DataTemplate>
-            </TabControl.ContentTemplate>
-        </TabControl>
-
+        <ComboBox Grid.Column="0"
+                  Grid.Row="0"
+                  ItemsSource="{Binding Associations}"
+                  DisplayMemberPath="BaseMonster.Name" IsEditable="True"
+                  SelectedItem="{Binding SelectedAssociation}">
+        </ComboBox>
+        <ListView Grid.Row="1"
+                  Grid.Column="1"
+                  ItemsSource="{Binding AvailableCombinations}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Fusions With :" DisplayMemberBinding="{Binding Key}" Width="Auto"/>
+                    <GridViewColumn Header="Fusion result :" DisplayMemberBinding="{Binding Value}" Width="Auto"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </Window>

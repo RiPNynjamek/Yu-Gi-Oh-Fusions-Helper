@@ -98,7 +98,14 @@ namespace Fusions.Tools
         private void AddNewCombination(List<Association> fusions, Card AssociatedCard, Card fusionResult)
         {
             var lastItem = fusions.Last();
-            lastItem.Combination.Add(new Tuple<Card, Card >(AssociatedCard, fusionResult));            
+
+            //Ignore duplicates
+            if(lastItem.Combination.Any(e => e.Key == AssociatedCard.Name))
+            {
+                return;
+            }
+            lastItem.Combination.Add(AssociatedCard.Name, fusionResult.Name);
+            //lastItem.Combination.Add(new KeyValuePair<Card, Card>(AssociatedCard, fusionResult));            
         }
     }
 }
