@@ -6,18 +6,17 @@ using System.Threading.Tasks;
 
 namespace Fusions.DataModel
 {
-    public class Monster : Card
+    class Magic : Card
     {
         private string _name;
         private CardType _cardType;
 
-        public override string Name { get => _name;  set => _name = value; }
-        public override CardType Type { get => _cardType;  set => _cardType = value; }
-
-        public Monster(string name, CardType type)
+        public Magic(string name)
         {
             Name = name;
-            Type = type;
         }
+
+        public override string Name { get => _name; set => _name = value; }
+        public override CardType Type { get => _cardType; set => _cardType = CardType.Magic; }
     }
 }

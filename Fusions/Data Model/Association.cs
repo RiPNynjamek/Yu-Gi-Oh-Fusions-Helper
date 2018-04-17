@@ -8,13 +8,12 @@ namespace Fusions.DataModel
         public Monster BaseMonster;
         //public Card AssociatedCard;
         //public Monster FusionResult;
-        public List<Tuple<Card, Monster>> Combination;
+        public List<Tuple<Card, Card>> Combination;
 
         public Association(Monster baseMonster)/*, Card associatedCard, Monster fusionResult)*/
         {
             BaseMonster = baseMonster;
-            //AssociatedCard = associatedCard;
-            //FusionResult = fusionResult;
+            Combination = new List<Tuple<Card, Card>>();
         }
     }
 }

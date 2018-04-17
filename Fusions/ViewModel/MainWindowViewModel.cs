@@ -21,6 +21,7 @@ namespace Fusions.ViewModel
             var ex = new Extracter();
             Text= fp.GetFileContent(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "FusionsFile.txt"));
             ex.ExtractData(Text);
+            Associations = ex.Fusions;
             //ExtractFusionCombos(Text)
         }
 

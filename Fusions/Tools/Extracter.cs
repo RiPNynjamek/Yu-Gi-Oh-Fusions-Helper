@@ -9,11 +9,11 @@ namespace Fusions.Tools
 {
     public class Extracter
     {
-        public List<Association> Associations { get; set; }
+        public List<Association> Fusions { get; set; }
 
         public Extracter()
         {
-            Associations = new List<Association>();
+            Fusions = new List<Association>();
         }
 
         public void ExtractData(Dictionary<string, string[]> text)
@@ -29,11 +29,12 @@ namespace Fusions.Tools
             var fusionsList = text.Values.ElementAt(5).ToList();
             fusionsList.RemoveRange(0, 12);
 
-            GetFusionByMonster(fusionsList);
+            Fusions = GetFusionByMonster(fusionsList);
         }
 
-        private void GetFusionByMonster(List<string> fusionsList)
+        private List<Association> GetFusionByMonster(List<string> fusionsList)
         {
+            var fusions = new List<Association>();
             //var monstersList = new List<Monster>();
             for (int i = 0; i < fusionsList.Count; i++)
             {
@@ -41,27 +42,66 @@ namespace Fusions.Tools
                 // string nextLine;
                 if (currentLine.StartsWith("----"))
                     continue;
+                if (fusionsList[i + 2].StartsWith("======"))
+                    return fusions;
                 if (currentLine == "" && fusionsList[i + 2].StartsWith("-------------------"))
                 {
-                    Monster monster = new Monster(fusionsList[i + 1], CardType.Base);
+                    var monster = new Monster(fusionsList[i + 1], CardType.Base);
                     //  monstersList.Add(monster);
-                    Associations.Add(new Association(monster, null, null));
-                    MonstersList = Tuple.Create(monster, null, null);
+                    fusions.Add(new Association(monster));
+                    //MonstersList = Tuple.Create(monster, null, null);
                     i++;
                     continue;
                 }
                 if (currentLine.Contains('='))
                 {
-                    Monster monster = new Monster(currentLine.Split('=')[0], CardType.Base);
-                    Monster fusionResult = new Monster(currentLine.Split('=')[1], CardType.FusionResult);
-                    if (MonstersList.ContainsKey(monster))
-                    {
-                        MonstersList[monster].Add();
-                    }
+                    var instances = currentLine.Split('=');
+                    //var secondinstance = currentLine.Split('=')[1];
+                    var type = CheckCardType(instances);
+                    var firstInstance = CardFactory.CreateCard(instances[0], type[0]);//new Monster(instances[0], type[0]);
+                    var secondInstance = CardFactory.CreateCard(instances[1], type[1]);//new Monster(instances[1], CardType.FusionResult);
 
+                  //  var dummyMonster = fusions.Where(e => e.BaseMonster.Name == monster.Name).FirstOrDefault();
+                    AddNewCombination(fusions, firstInstance, secondInstance);
                 }
-                //Monster monster2 = new Monster(currentLine.Substring(0, currentLine.IndexOf("(")));
             }
+            return fusions;
+        }
+
+        private List<CardType> CheckCardType(string[] instances)
+        {
+            List<CardType> cardTypes = new List<CardType>();
+            for (int i = 0; i < instances.Length; i++)
+            {
+                if (instances[i].Contains("(Trap)"))
+                {
+                    cardTypes.Add(CardType.Trap);
+                }
+                else if (instances[i].Contains("(Equip"))
+                {
+                    cardTypes.Add(CardType.Equipment);
+                }
+                else if (instances[i].Contains("(Magic)"))
+                {
+                    cardTypes.Add(CardType.Magic);
+                }
+                else
+                {
+                    if(i == 0)
+                        cardTypes.Add(CardType.Base);
+                    else
+                    {
+                        cardTypes.Add(CardType.FusionResult);
+                    }
+                }
+            }
+            return cardTypes;
+        }
+
+        private void AddNewCombination(List<Association> fusions, Card AssociatedCard, Card fusionResult)
+        {
+            var lastItem = fusions.Last();
+            lastItem.Combination.Add(new Tuple<Card, Card >(AssociatedCard, fusionResult));            
         }
     }
 }

@@ -10,6 +10,8 @@ namespace Fusions.DataModel
     {
         Base,
         FusionResult,
-        Equipment
+        Equipment,
+        Trap,
+        Magic
     }
 }

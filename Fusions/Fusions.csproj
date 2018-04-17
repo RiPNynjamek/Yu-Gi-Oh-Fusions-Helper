@@ -56,9 +56,12 @@
     </ApplicationDefinition>
     <Compile Include="Data Model\Association.cs" />
     <Compile Include="Data Model\Card.cs" />
+    <Compile Include="Data Model\CardFactory.cs" />
     <Compile Include="Data Model\CardType.cs" />
     <Compile Include="Data Model\Equipment.cs" />
+    <Compile Include="Data Model\Magic.cs" />
     <Compile Include="Data Model\Monster.cs" />
+    <Compile Include="Data Model\Trap.cs" />
     <Compile Include="Tools\Extracter.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Page Include="MainWindow.xaml">
