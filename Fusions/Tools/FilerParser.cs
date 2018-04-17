@@ -46,7 +46,7 @@ namespace Fusions.Tools
         private List<List<string>> GetContents(List<string> items, List<string> headers)
         {
             var Contents = new List<List<string>>();
-            
+
             var headerCounter = 0;
             var subLineCounter = 0;
             bool isFirstOccurence = true;

@@ -1,12 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Fusions.DataModel
 {
-    public struct Association
+    public class Association
     {
         public Monster BaseMonster;
-        public Monster AssociatedMonster;
-        public Monster FusionResult;
-        public Tuple<Monster, Card> Combination;
+        //public Card AssociatedCard;
+        //public Monster FusionResult;
+        public List<Tuple<Card, Monster>> Combination;
+
+        public Association(Monster baseMonster)/*, Card associatedCard, Monster fusionResult)*/
+        {
+            BaseMonster = baseMonster;
+            //AssociatedCard = associatedCard;
+            //FusionResult = fusionResult;
+        }
     }
 }

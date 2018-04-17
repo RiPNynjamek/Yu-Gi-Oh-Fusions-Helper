@@ -59,7 +59,7 @@
     <Compile Include="Data Model\CardType.cs" />
     <Compile Include="Data Model\Equipment.cs" />
     <Compile Include="Data Model\Monster.cs" />
-    <Compile Include="Tools\Exctracter.cs" />
+    <Compile Include="Tools\Extracter.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
