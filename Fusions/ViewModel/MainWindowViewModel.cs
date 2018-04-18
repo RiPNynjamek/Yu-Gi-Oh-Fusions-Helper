@@ -55,13 +55,21 @@ namespace Fusions.ViewModel
             {
                 AvailableCombinations.Clear();
             }
-            var temp = Associations.Where(e => e.BaseMonster.Name == SelectedAssociation.BaseMonster.Name);
-            foreach (var item in temp)
+            
+            try
             {
-                foreach (var entry in item.Combination)
+                var temp = Associations.Where(e => e.BaseMonster.Name == SelectedAssociation.BaseMonster.Name);
+                foreach (var item in temp)
                 {
-                    AvailableCombinations.Add(new Combination(entry.Key, entry.Value));
+                    foreach (var entry in item.Combination)
+                    {
+                        AvailableCombinations.Add(new Combination(entry.Key, entry.Value));
+                    }
                 }
+            }
+            catch (NullReferenceException)
+            {
+                return;
             }
         }
 
