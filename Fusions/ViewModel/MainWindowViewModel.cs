@@ -82,12 +82,13 @@ namespace Fusions.ViewModel
 
     public class Combination
     {
-        public Combination(string key, string value)
+        public Combination(Card key, Card value)
         {
             Key = key;
             Value = value;
         }
-        public string Key { get; set; }
-        public string Value { get; set; }
+
+        public Card Key { get; set; }
+        public Card Value { get; set; }
     }
 }

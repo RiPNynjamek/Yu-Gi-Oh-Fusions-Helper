@@ -28,8 +28,8 @@
                   ItemsSource="{Binding AvailableCombinations}">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Fusions With :" DisplayMemberBinding="{Binding Key}" Width="Auto"/>
-                    <GridViewColumn Header="Fusion result :" DisplayMemberBinding="{Binding Value}" Width="Auto"/>
+                    <GridViewColumn Header="Fusions With :" DisplayMemberBinding="{Binding Key.Name}" Width="Auto"/>
+                    <GridViewColumn Header="Fusion result :" DisplayMemberBinding="{Binding Value.Name}" Width="Auto"/>
                 </GridView>
             </ListView.View>
         </ListView>

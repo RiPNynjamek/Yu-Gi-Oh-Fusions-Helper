@@ -44,55 +44,96 @@ namespace Fusions.Tools
                     return fusions;
                 if (currentLine == "" && fusionsList[i + 2].StartsWith("-------------------"))
                 {
-                    var monster = new Monster(fusionsList[i + 1], CardType.Base);
+                    //var monster = new Monster(fusionsList[i + 1], CardType.Base);
 
-                    fusions.Add(new Association(monster));
+                    //fusions.Add(new Association(monster));
+                    var mstr = new Monster(GetShortName(fusionsList[i + 1]), CardType.Base);
 
+                    int[] numbers = GetMonsterStats(fusionsList[i + 1]);
+                    mstr.Attack = numbers[0];
+                    mstr.Defense = numbers[1];
+                    fusions.Add(new Association(mstr));
                     i++;
                     continue;
                 }
                 if (currentLine.Contains('='))
                 {
                     var instances = currentLine.Split('=');
+                    List<Card> monsters = new List<Card>() ;
+                    var isFirst = true;
+                    for (int j = 0; j < instances.Length; j++)
+                    {
+                        var Type = CheckCardType(instances[j], isFirst);
+                        var cardName = GetShortName(instances[j]);
+                        monsters.Add(CardFactory.CreateCard(cardName, Type, GetMonsterStats(instances[j])));
+                        isFirst = false;
+                    }
+                    //var type = CheckCardType(instances);
+                    //var firstInstance = CardFactory.CreateCard(instances[0], type[0]);
+                    //var secondInstance = CardFactory.CreateCard(instances[1], type[1]);
 
-                    var type = CheckCardType(instances);
-                    var firstInstance = CardFactory.CreateCard(instances[0], type[0]);
-                    var secondInstance = CardFactory.CreateCard(instances[1], type[1]);
-
-                    AddNewCombination(fusions, firstInstance, secondInstance);
+                    AddNewCombination(fusions, monsters[0], monsters[1]);
                 }
             }
             return fusions;
         }
 
-        private List<CardType> CheckCardType(string[] instances)
+        private string GetShortName(string v)
         {
-            List<CardType> cardTypes = new List<CardType>();
-            for (int i = 0; i < instances.Length; i++)
+            return v.Split('(')[0];
+        }
+
+        private int[] GetMonsterStats(string cardStats)
+        {
+            int[] stats = new int[2];
+            string[] testValues = { "Trap", "Equipment", "Magic" };
+            if (cardStats.Contains("Trap") || cardStats.Contains("Equip") || cardStats.Contains("Magic") 
+                || cardStats.Contains("(?)") || cardStats.Contains("Ritual"))
             {
-                if (instances[i].Contains("(Trap)"))
+                return stats;
+            }
+            if (cardStats.Contains("("))
+            {
+                var output = cardStats.Split('(', ')')[1];
+                for (int i = 0; i < stats.Length; i++)
                 {
-                    cardTypes.Add(CardType.Trap);
-                }
-                else if (instances[i].Contains("(Equip"))
-                {
-                    cardTypes.Add(CardType.Equipment);
-                }
-                else if (instances[i].Contains("(Magic)"))
-                {
-                    cardTypes.Add(CardType.Magic);
-                }
-                else
-                {
-                    if(i == 0)
-                        cardTypes.Add(CardType.Base);
-                    else
+                    try
                     {
-                        cardTypes.Add(CardType.FusionResult);
+                        stats[i] = Convert.ToInt32(output.Split('/')[i]);
+                    }
+                    catch (FormatException)
+                    {
+                        return stats;
                     }
                 }
             }
-            return cardTypes;
+            return stats;
+        }
+
+        private CardType CheckCardType(string stringToCheck, bool isFirst)
+        {
+            //List<CardType> cardTypes = new List<CardType>();
+            if (stringToCheck.Contains("(Trap)"))
+            {
+                return CardType.Trap;
+            }
+            else if (stringToCheck.Contains("(Equip"))
+            {
+                return CardType.Equipment;
+            }
+            else if (stringToCheck.Contains("(Magic)"))
+            {
+                return CardType.Magic;
+            }
+            else
+            {
+                if(isFirst)
+                    return CardType.Base;
+                else
+                {
+                    return CardType.FusionResult;
+                }
+            }         
         }
 
         private void AddNewCombination(List<Association> fusions, Card AssociatedCard, Card fusionResult)
@@ -100,11 +141,11 @@ namespace Fusions.Tools
             var lastItem = fusions.Last();
 
             //Ignore duplicates
-            if(lastItem.Combination.Any(e => e.Key == AssociatedCard.Name))
+            if(lastItem.Combination.Any(e => e.Key == AssociatedCard))
             {
                 return;
             }
-            lastItem.Combination.Add(AssociatedCard.Name, fusionResult.Name);
+            lastItem.Combination.Add(AssociatedCard, fusionResult);
             //lastItem.Combination.Add(new KeyValuePair<Card, Card>(AssociatedCard, fusionResult));            
         }
     }

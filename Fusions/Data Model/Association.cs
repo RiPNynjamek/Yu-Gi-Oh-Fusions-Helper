@@ -4,13 +4,13 @@ namespace Fusions.DataModel
 {
     public class Association
     {
-        public Monster BaseMonster { get; set; }
-        public Dictionary<string, string> Combination { get; set; }
+        public Card BaseMonster { get; set; }
+        public Dictionary<Card, Card> Combination { get; set; }
 
-        public Association(Monster baseMonster)
+        public Association(Card baseMonster)
         {
             BaseMonster = baseMonster;
-            Combination = new Dictionary<string, string>();
+            Combination = new Dictionary<Card, Card>();
         }
     }
 }
