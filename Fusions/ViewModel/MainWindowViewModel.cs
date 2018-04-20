@@ -11,20 +11,67 @@ namespace Fusions.ViewModel
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
-        private Association _selectedAssociation;
+        private Card _firstSelectedCard;
+        private Card _secondSelectedCard;
+        private Card _thirdSelectedCard;
+        private Card _fourthSelectedCard;
+        private Card _fifthSelectedCard;
+
         private ObservableCollection<Combination> _availableCombinations;
 
         public Dictionary<string, string[]> Text { get; set; }
-        public List<Association> Associations { get; set; }
+        public List<Combination> Associations { get; set; }
+        public List<Card> AllCards { get; set; }
 
-        public Association SelectedAssociation
+        public Card FirstSelectedCard
         {
-            get { return _selectedAssociation; }
+            get { return _firstSelectedCard; }
             set
             {
-                _selectedAssociation = value;
+                _firstSelectedCard = value;
                 SelectedAssociationChanged();
-                OnPropertyChanged("SelectedAssociation");
+                OnPropertyChanged("FirstSelectedAssociation");
+            }
+        }
+
+        public Card SecondSelectedCard
+        {
+            get { return _secondSelectedCard; }
+            set
+            {
+                _secondSelectedCard = value;
+                SelectedAssociationChanged();
+                OnPropertyChanged("SecondSelectedAssociation");
+            }
+        }
+        public Card ThirdSelectedCard
+        {
+            get { return _thirdSelectedCard; }
+            set
+            {
+                _thirdSelectedCard = value;
+                SelectedAssociationChanged();
+                OnPropertyChanged("ThirdSelectedAssociation");
+            }
+        }
+        public Card FourthSelectedCard
+        {
+            get { return _fourthSelectedCard; }
+            set
+            {
+                _fourthSelectedCard = value;
+                SelectedAssociationChanged();
+                OnPropertyChanged("FourthSelectedAssociation");
+            }
+        }
+        public Card FifthSelectedCard
+        {
+            get { return _fifthSelectedCard; }
+            set
+            {
+                _fifthSelectedCard = value;
+                SelectedAssociationChanged();
+                OnPropertyChanged("FifthSelectedAssociation");
             }
         }
 
@@ -46,6 +93,7 @@ namespace Fusions.ViewModel
             Text = fp.GetFileContent(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
                                     , "FusionsFile.txt"));
             ex.ExtractData(Text);
+            AllCards = ex.CardsList;
             Associations = ex.Fusions;
         }
 
@@ -58,18 +106,39 @@ namespace Fusions.ViewModel
             
             try
             {
-                var temp = Associations.Where(e => e.BaseMonster.Name == SelectedAssociation.BaseMonster.Name);
-                foreach (var item in temp)
+               var data = (new Card[] { FirstSelectedCard, SecondSelectedCard, ThirdSelectedCard, FourthSelectedCard, FifthSelectedCard })
+                            .Where(x => x != null).ToList();
+                foreach (var item in Associations)
                 {
-                    foreach (var entry in item.Combination)
+                    if (data.Contains(item.FirstCard))
                     {
-                        AvailableCombinations.Add(new Combination(entry.Key, entry.Value));
+                        AvailableCombinations.Add(item);
                     }
                 }
+                RestrainCombinations(data);
             }
-            catch (NullReferenceException)
+            catch (NullReferenceException e)
             {
-                return;
+                System.Windows.MessageBox.Show(e.Message);
+            }
+        }
+
+        private void RestrainCombinations(List<Card> hand)
+        {
+
+            var bite =new ObservableCollection<Combination>();
+
+            foreach (var item in AvailableCombinations)
+            {
+                bite.Add(item);
+            }
+
+            foreach (var item in bite)
+            {
+                if (!(hand.Exists(e => e.Name == item.FirstCard.Name) && (hand.Exists(e => e.Name == item.SecondCard.Name))))
+                {
+                    AvailableCombinations.Remove(item);
+                }
             }
         }
 
@@ -78,17 +147,5 @@ namespace Fusions.ViewModel
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-    }
-
-    public class Combination
-    {
-        public Combination(Card key, Card value)
-        {
-            Key = key;
-            Value = value;
-        }
-
-        public Card Key { get; set; }
-        public Card Value { get; set; }
     }
 }

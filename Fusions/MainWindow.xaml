@@ -11,25 +11,62 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="6*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="15*"/>
         </Grid.RowDefinitions>
         <ComboBox Grid.Column="0"
                   Grid.Row="0"
-                  ItemsSource="{Binding Associations}"
-                  DisplayMemberPath="BaseMonster.Name" IsEditable="True"
-                  SelectedItem="{Binding SelectedAssociation}">
+                  ItemsSource="{Binding AllCards}"
+                  DisplayMemberPath="Name" IsEditable="True"
+                  SelectedItem="{Binding FirstSelectedCard}">
+        </ComboBox>
+        <ComboBox Grid.Column="0"
+                  Grid.Row="1"
+                  ItemsSource="{Binding AllCards}"
+                  DisplayMemberPath="Name" IsEditable="True"
+                  SelectedItem="{Binding SecondSelectedCard}">
+        </ComboBox>
+        <ComboBox Grid.Column="0"
+                  Grid.Row="2"
+                  ItemsSource="{Binding AllCards}"
+                  DisplayMemberPath="Name" IsEditable="True"
+                  SelectedItem="{Binding ThirdSelectedCard}">
+        </ComboBox>
+        <ComboBox Grid.Column="0"
+                  Grid.Row="3"
+                  ItemsSource="{Binding AllCards}"
+                  DisplayMemberPath="Name" IsEditable="True"
+                  SelectedItem="{Binding FourthSelectedCard}">
+        </ComboBox>
+        <ComboBox Grid.Column="0"
+                  Grid.Row="4"
+                  ItemsSource="{Binding AllCards}"
+                  DisplayMemberPath="Name" IsEditable="True"
+                  SelectedItem="{Binding FifthSelectedCard}">
         </ComboBox>
         <ListView Grid.Row="1"
                   Grid.Column="1"
+                  Grid.RowSpan="5"
+                  Grid.ColumnSpan="2"
                   ItemsSource="{Binding AvailableCombinations}">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Fusions With :" DisplayMemberBinding="{Binding Key.Name}" Width="Auto"/>
-                    <GridViewColumn Header="Fusion result :" DisplayMemberBinding="{Binding Value.Name}" Width="Auto"/>
+                    <GridViewColumn Header="Base Card :" DisplayMemberBinding="{Binding FirstCard.Name}" Width="Auto"/>
+                    <GridViewColumn Header="Fusions With :" DisplayMemberBinding="{Binding SecondCard.Name}" Width="Auto"/>
+                    <GridViewColumn Header="Attack" DisplayMemberBinding="{Binding SecondCard.Attack}" Width="Auto"/>
+                    <GridViewColumn Header="Defense" DisplayMemberBinding="{Binding SecondCard.Defense}" Width="Auto" />
+                    <GridViewColumn Header="" Width="20" DisplayMemberBinding="{Binding Text}" />
+                    <GridViewColumn Header="Fusion result :" DisplayMemberBinding="{Binding FusionResult.Name}" Width="Auto"/>
+                    <GridViewColumn Header="Attack" DisplayMemberBinding="{Binding FusionResult.Attack}" Width="Auto"/>
+                    <GridViewColumn Header="Defense" DisplayMemberBinding="{Binding FusionResult.Defense}" Width="Auto" />
                 </GridView>
             </ListView.View>
         </ListView>

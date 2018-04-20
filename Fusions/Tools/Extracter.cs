@@ -7,11 +7,13 @@ namespace Fusions.Tools
 {
     public class Extracter
     {
-        public List<Association> Fusions { get; set; }
+        public List<Combination> Fusions { get; set; }
+        public List<Card> CardsList { get; private set; }
 
         public Extracter()
         {
-            Fusions = new List<Association>();
+            CardsList = new List<Card>();
+            Fusions = new List<Combination>();
         }
 
         public void ExtractData(Dictionary<string, string[]> text)
@@ -28,11 +30,12 @@ namespace Fusions.Tools
             fusionsList.RemoveRange(0, 12);
 
             Fusions = GetFusionByMonster(fusionsList);
+            Fusions.RemoveAll(e => e.SecondCard == null || e.FusionResult == null);
         }
 
-        private List<Association> GetFusionByMonster(List<string> fusionsList)
+        private List<Combination> GetFusionByMonster(List<string> fusionsList)
         {
-            var fusions = new List<Association>();
+            var fusions = new List<Combination>();
 
             for (int i = 0; i < fusionsList.Count; i++)
             {
@@ -48,11 +51,11 @@ namespace Fusions.Tools
 
                     //fusions.Add(new Association(monster));
                     var mstr = new Monster(GetShortName(fusionsList[i + 1]), CardType.Base);
-
+                    CardsList.Add(mstr);
                     int[] numbers = GetMonsterStats(fusionsList[i + 1]);
                     mstr.Attack = numbers[0];
                     mstr.Defense = numbers[1];
-                    fusions.Add(new Association(mstr));
+                    fusions.Add(new Combination(mstr));
                     i++;
                     continue;
                 }
@@ -136,16 +139,24 @@ namespace Fusions.Tools
             }         
         }
 
-        private void AddNewCombination(List<Association> fusions, Card AssociatedCard, Card fusionResult)
+        private void AddNewCombination(List<Combination> fusions, Card AssociatedCard, Card fusionResult)
         {
             var lastItem = fusions.Last();
 
-            //Ignore duplicates
-            if(lastItem.Combination.Any(e => e.Key == AssociatedCard))
+            if (lastItem.FirstCard == AssociatedCard)
             {
                 return;
             }
-            lastItem.Combination.Add(AssociatedCard, fusionResult);
+            //Ignore duplicates
+            //if(lastItem.Combination.Any(e => e.Key == AssociatedCard))
+            //{
+            //    return;
+            //}
+            //lastItem.Combination.Add(AssociatedCard, fusionResult);
+            var newItem = new Combination(lastItem.FirstCard, AssociatedCard, fusionResult);
+            //lastItem.SecondCard = AssociatedCard;
+            //lastItem.FusionResult = fusionResult;
+            fusions.Add(newItem);
             //lastItem.Combination.Add(new KeyValuePair<Card, Card>(AssociatedCard, fusionResult));            
         }
     }
