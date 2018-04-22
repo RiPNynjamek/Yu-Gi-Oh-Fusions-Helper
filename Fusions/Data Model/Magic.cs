@@ -3,7 +3,7 @@
     class Magic : Card
     {
         private string _name;
-        private CardType _cardType;
+        private CardCategory _cardType;
 
         public Magic(string name)
         {
@@ -11,6 +11,6 @@
         }
 
         public override string Name { get => _name; set => _name = value; }
-        public override CardType Type { get => _cardType; set => _cardType = CardType.Magic; }
+        public override CardCategory Type { get => _cardType; set => _cardType = CardCategory.Magic; }
     }
 }

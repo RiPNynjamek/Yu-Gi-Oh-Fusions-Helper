@@ -3,7 +3,7 @@
     public class Trap : Card
     {
         private string _name;
-        private CardType _cardType = CardType.Trap;
+        private CardCategory _cardType = CardCategory.Trap;
 
         public Trap(string name)
         {
@@ -11,6 +11,6 @@
         }
 
         public override string Name { get => _name; set => _name = value; }
-        public override CardType Type { get => _cardType; set => _cardType = CardType.Trap; }
+        public override CardCategory Type { get => _cardType; set => _cardType = CardCategory.Trap; }
     }
 }

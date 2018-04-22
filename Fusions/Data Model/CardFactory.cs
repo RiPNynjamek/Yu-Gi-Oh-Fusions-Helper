@@ -4,18 +4,18 @@ namespace Fusions.DataModel
 {
     public static class CardFactory
     {
-        public static Card CreateCard(string name, CardType cardType, int[] monsterStats)
+        public static Card CreateCard(string name, CardCategory cardType, int[] monsterStats)
         {
             switch (cardType)
             {
-                case CardType.Base:
-                case CardType.FusionResult:
+                case CardCategory.Base:
+                case CardCategory.FusionResult:
                     return new Monster(name, monsterStats[0], monsterStats[1], cardType);
-                case CardType.Equipment:
+                case CardCategory.Equipment:
                     return new Equipment(name);
-                case CardType.Magic:
+                case CardCategory.Magic:
                     return new Magic(name);
-                case CardType.Trap:
+                case CardCategory.Trap:
                     return new Trap(name);
                 default:
                     throw new ArgumentOutOfRangeException();

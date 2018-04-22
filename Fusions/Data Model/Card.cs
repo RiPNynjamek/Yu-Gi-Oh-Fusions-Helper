@@ -3,6 +3,6 @@
     public abstract class Card
     {
         public abstract string Name { get; set; }
-        public abstract CardType Type { get; set; }
+        public abstract CardCategory Type { get; set; }
     }
 }

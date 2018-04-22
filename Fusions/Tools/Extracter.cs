@@ -50,7 +50,7 @@ namespace Fusions.Tools
                     //var monster = new Monster(fusionsList[i + 1], CardType.Base);
 
                     //fusions.Add(new Association(monster));
-                    var mstr = new Monster(GetShortName(fusionsList[i + 1]), CardType.Base);
+                    var mstr = new Monster(GetShortName(fusionsList[i + 1]), CardCategory.Base);
                     CardsList.Add(mstr);
                     int[] numbers = GetMonsterStats(fusionsList[i + 1]);
                     mstr.Attack = numbers[0];
@@ -83,7 +83,7 @@ namespace Fusions.Tools
 
         private string GetShortName(string v)
         {
-            return v.Split('(')[0];
+            return v.Split('(')[0].Trim();
         }
 
         private int[] GetMonsterStats(string cardStats)
@@ -113,28 +113,28 @@ namespace Fusions.Tools
             return stats;
         }
 
-        private CardType CheckCardType(string stringToCheck, bool isFirst)
+        private CardCategory CheckCardType(string stringToCheck, bool isFirst)
         {
             //List<CardType> cardTypes = new List<CardType>();
             if (stringToCheck.Contains("(Trap)"))
             {
-                return CardType.Trap;
+                return CardCategory.Trap;
             }
             else if (stringToCheck.Contains("(Equip"))
             {
-                return CardType.Equipment;
+                return CardCategory.Equipment;
             }
             else if (stringToCheck.Contains("(Magic)"))
             {
-                return CardType.Magic;
+                return CardCategory.Magic;
             }
             else
             {
                 if(isFirst)
-                    return CardType.Base;
+                    return CardCategory.Base;
                 else
                 {
-                    return CardType.FusionResult;
+                    return CardCategory.FusionResult;
                 }
             }         
         }

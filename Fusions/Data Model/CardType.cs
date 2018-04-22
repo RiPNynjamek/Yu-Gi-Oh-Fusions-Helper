@@ -1,6 +1,6 @@
 ﻿namespace Fusions.DataModel
 {
-    public enum CardType
+    public enum CardCategory
     {
         Base,
         FusionResult,

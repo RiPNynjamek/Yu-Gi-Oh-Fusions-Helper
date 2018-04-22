@@ -140,6 +140,50 @@ namespace Fusions.ViewModel
                     AvailableCombinations.Remove(item);
                 }
             }
+            CheckFurtherFusions(hand);
+            RemoveDuplicates();
+        }
+
+        private void RemoveDuplicates()
+        {
+            var bite = new ObservableCollection<Combination>();
+
+            foreach (var item in AvailableCombinations)
+            {
+                bite.Add(item);
+            }
+            foreach (var item in bite)
+            {
+                var comb1 = AvailableCombinations.Where(e => e.FirstCard.Name == item.FirstCard.Name && e.SecondCard.Name == item.SecondCard.Name).FirstOrDefault();
+                var comb2 = AvailableCombinations.Where(e => e.FirstCard.Name == item.SecondCard.Name && e.SecondCard.Name == item.FirstCard.Name).FirstOrDefault();
+                if (comb1 != null && comb2 != null)
+                    AvailableCombinations.Remove(item);
+            }
+            AvailableCombinations = new ObservableCollection<Combination>(AvailableCombinations.Distinct());
+        }
+
+        private void CheckFurtherFusions(List<Card> hand)
+        {
+            var temp = new ObservableCollection<Combination>();
+            foreach (var item in AvailableCombinations)
+            {
+                foreach (var card in hand)
+                {
+                    var test = Associations.Where(e => e.FirstCard == item.FusionResult && hand.Contains(e.FirstCard));
+                }
+                //var yolo = Associations.Where(j => hand.Any(o => o == j.FirstCard));
+                var tes1t = Associations.Where(e => e.FirstCard.Name == item.FusionResult.Name && hand.Exists(p => p.Name == e.SecondCard.Name)).ToList();
+                if (tes1t != null)
+                    temp = new ObservableCollection<Combination>(temp.Concat(tes1t));
+                var testing = Associations.Where(n => n.FirstCard.Name == hand.Find(e => e.Name == n.FirstCard.Name).Name && n.SecondCard.Name == item.FusionResult.Name);// 
+                //if(Associations.Where(e => e.FirstCard == item.FusionResult) != null && Associations.Where(a => a.SecondCard == item.SecondCard) != null)
+                if (Associations.Exists(n => n.SecondCard == item.FirstCard && n.FirstCard == item.FusionResult))
+                {
+                    var test = Associations.Where(n => n.SecondCard == item.SecondCard && n.FirstCard == item.FusionResult).FirstOrDefault();
+                    temp.Add(Associations.Where(n => n.SecondCard == item.SecondCard && n.FirstCard == item.FusionResult).FirstOrDefault());
+                }
+            }
+            AvailableCombinations = new ObservableCollection<Combination>(AvailableCombinations.Concat(temp));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
