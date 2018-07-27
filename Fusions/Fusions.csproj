@@ -56,8 +56,8 @@
     </ApplicationDefinition>
     <Compile Include="Data Model\Association.cs" />
     <Compile Include="Data Model\Card.cs" />
+    <Compile Include="Data Model\CardCategory.cs" />
     <Compile Include="Data Model\CardFactory.cs" />
-    <Compile Include="Data Model\CardType.cs" />
     <Compile Include="Data Model\Combination.cs" />
     <Compile Include="Data Model\Equipment.cs" />
     <Compile Include="Data Model\Magic.cs" />

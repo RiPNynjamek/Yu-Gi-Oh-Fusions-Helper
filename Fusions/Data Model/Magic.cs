@@ -11,6 +11,6 @@
         }
 
         public override string Name { get => _name; set => _name = value; }
-        public override CardCategory Type { get => _cardType; set => _cardType = CardCategory.Magic; }
+        public override CardCategory Category { get => _cardType; set => _cardType = CardCategory.Magic; }
     }
 }
