@@ -1,0 +1,33 @@
+﻿namespace Fusions.DataModel
+{
+    public enum MonsterType
+    {
+        Animal,
+        Female,
+        Machine,
+        Plant,
+        Pyro,
+        Warrior,
+        Aqua,
+        Dragon,
+        Thunder,
+        Beast,
+        Fish,
+        Turtle,
+        SpecialA,
+        DarkMagic,
+        Elf,
+        DarkSpellcaster,
+        Jar,
+        Dinosaur,
+        SpecialB,
+        Rock,
+        Zombie,
+        SpecialC,
+        Fairy,
+        Fiend,
+        Insect,
+        Reptile,
+        WingedBeast
+    }
+}
